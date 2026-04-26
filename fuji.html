@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jujo → Kawaguchiko — Cẩm nang tàu điện</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+  :root {
+    --fuji:#2d4a7a;--fuji-light:#4a6fa5;--fuji-pale:#e8eef7;
+    --sakura:#e8637a;--sakura-light:#f5a0b0;
+    --matcha:#3d7a5a;--matcha-light:#6aab87;
+    --amber:#d4820a;--amber-light:#f0a830;
+    --snow:#f7f9fc;--ink:#1a1f2e;--mist:#8892a4;--line:#dde3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans JP',sans-serif;background:var(--snow);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--fuji) 0%,#1a2d4a 60%,#0d1824 100%);padding:36px 24px 52px;position:relative;overflow:hidden;}
+  .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:26px;background:var(--snow);border-radius:26px 26px 0 0;}
+  .hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:1;}
+  .fuji-icon{font-size:44px;display:block;margin-bottom:10px;}
+  .hero h1{font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(20px,5vw,30px);font-weight:900;color:#fff;line-height:1.3;margin-bottom:6px;}
+  .hero h1 span{color:var(--sakura-light);}
+  .hero-sub{color:rgba(255,255,255,.6);font-size:12px;font-weight:300;}
+
+  /* TAB BAR */
+  .tab-bar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:2px solid var(--line);display:flex;max-width:680px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
+  .tab-bar::-webkit-scrollbar{display:none;}
+  .tab-btn{flex:1;min-width:90px;padding:13px 8px 11px;font-size:11px;font-weight:700;color:var(--mist);background:none;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent;}
+  .tab-btn.active{color:var(--fuji);border-bottom-color:var(--fuji);}
+  .tab-btn .ti{display:block;font-size:18px;margin-bottom:2px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* CONTENT */
+  .content{max-width:680px;margin:0 auto;padding:18px 15px 72px;}
+
+  /* INSTRUCTION */
+  .instruction{background:linear-gradient(135deg,#fff8e1,#fff3cd);border-left:4px solid var(--amber);border-radius:0 12px 12px 0;padding:12px 15px;margin-bottom:18px;font-size:13px;color:#7a5500;}
+  .instruction strong{font-weight:700;color:var(--amber);}
+
+  /* STATION CARDS */
+  .station-card{background:#fff;border-radius:20px;margin-bottom:13px;box-shadow:0 2px 14px rgba(45,74,122,.07);border:1.5px solid var(--line);overflow:hidden;}
+  .station-header{display:flex;align-items:center;gap:12px;padding:15px 17px 12px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;}
+  .station-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .station-info{flex:1;min-width:0;}
+  .station-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;}
+  .station-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.2;}
+  .station-name-jp{font-size:11px;color:var(--mist);margin-top:1px;}
+  .chevron{color:var(--mist);font-size:18px;transition:transform .3s ease;flex-shrink:0;}
+  .station-card.open .chevron{transform:rotate(180deg);}
+  .panel{display:none;border-top:1.5px solid var(--line);}
+  .station-card.open .panel{display:block;}
+  .stuck-label{padding:12px 17px 6px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sakura);}
+  .option{padding:10px 17px;border-bottom:1px solid var(--line);display:flex;gap:11px;align-items:flex-start;}
+  .option:last-child{border-bottom:none;}
+  .option-num{width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .option-body{flex:1;min-width:0;}
+  .option-title{font-size:13px;font-weight:700;margin-bottom:4px;line-height:1.3;}
+  .option-desc{font-size:12px;color:var(--mist);line-height:1.6;}
+  .option-desc strong{color:var(--ink);font-weight:700;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.4px;margin-top:5px;margin-right:4px;}
+  .tag-primary{background:var(--fuji);color:#fff;}
+  .tag-alt{background:var(--fuji-pale);color:var(--fuji);}
+  .tag-warn{background:#fff3e0;color:var(--amber);}
+  .tag-ok{background:#e8f5ee;color:var(--matcha);}
+  .next-step{background:var(--fuji-pale);margin:0 13px 13px;border-radius:12px;padding:10px 13px;display:flex;align-items:center;gap:10px;font-size:12px;}
+  .next-step-arrow{font-size:17px;}
+  .next-step-text strong{color:var(--fuji);font-weight:700;}
+  .next-step-text span{color:var(--mist);font-size:11px;display:block;}
+
+  /* THEMES */
+  .theme-start .station-badge{background:#e8eef7;color:var(--fuji);}
+  .theme-start .station-label,.theme-start .station-name{color:var(--fuji);}
+  .theme-shinjuku .station-badge{background:#fde8ec;color:var(--sakura);}
+  .theme-shinjuku .station-label,.theme-shinjuku .station-name{color:var(--sakura);}
+  .theme-takao .station-badge{background:#e8f5ee;color:var(--matcha);}
+  .theme-takao .station-label,.theme-takao .station-name{color:var(--matcha);}
+  .theme-otsuki .station-badge{background:#fff3e0;color:var(--amber);}
+  .theme-otsuki .station-label,.theme-otsuki .station-name{color:var(--amber);}
+  .opt-blue .option-num{background:var(--fuji-pale);color:var(--fuji);}
+  .opt-pink .option-num{background:#fde8ec;color:var(--sakura);}
+  .opt-green .option-num{background:#e8f5ee;color:var(--matcha);}
+  .opt-amber .option-num{background:#fff3e0;color:var(--amber);}
+
+  .connector{display:flex;align-items:center;padding:3px 22px;gap:8px;color:var(--mist);font-size:10px;font-weight:700;letter-spacing:1px;}
+  .connector-line{flex:1;height:1.5px;background:var(--line);}
+
+  .destination{background:linear-gradient(135deg,#e8f5ee,#d4eddf);border:2px solid var(--matcha-light);border-radius:20px;padding:22px 18px;text-align:center;margin-top:8px;}
+  .destination-icon{font-size:44px;margin-bottom:6px;}
+  .destination-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:22px;font-weight:900;color:var(--matcha);}
+  .destination-jp{font-size:12px;color:var(--matcha-light);margin-top:2px;}
+  .destination-time{margin-top:12px;background:#fff;border-radius:10px;padding:10px 15px;font-size:13px;color:var(--matcha);font-weight:700;}
+
+  .tips-section{background:linear-gradient(135deg,var(--fuji) 0%,#1a2d4a 100%);border-radius:20px;padding:22px 18px;color:#fff;}
+  .tips-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;margin-bottom:14px;color:var(--sakura-light);}
+  .tip-item{display:flex;gap:10px;margin-bottom:12px;font-size:13px;line-height:1.6;}
+  .tip-icon{font-size:17px;flex-shrink:0;margin-top:1px;}
+  .tip-text{color:rgba(255,255,255,.85);}
+  .tip-text strong{color:#fff;}
+
+  /* ── GUIDE STYLES ── */
+  .gsec{margin-bottom:22px;}
+  .gsec-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--fuji);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+  .gsec-title::after{content:'';flex:1;height:1.5px;background:var(--line);border-radius:2px;}
+
+  .train-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px;}
+  .train-card{background:#fff;border-radius:14px;border:1.5px solid var(--line);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .train-color-bar{height:7px;width:100%;}
+  .train-card-body{padding:11px 12px;}
+  .train-name-jp{font-size:10px;color:var(--mist);margin-bottom:1px;}
+  .train-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--ink);margin-bottom:4px;}
+  .train-desc{font-size:11px;color:var(--mist);line-height:1.6;}
+  .train-desc strong{color:var(--ink);font-weight:700;}
+
+  .hbox{border-radius:13px;padding:13px 15px;margin-bottom:11px;font-size:13px;line-height:1.65;}
+  .hb-blue{background:var(--fuji-pale);border-left:4px solid var(--fuji);color:var(--fuji);}
+  .hb-red{background:#fde8ec;border-left:4px solid var(--sakura);color:#9a2035;}
+  .hb-green{background:#e8f5ee;border-left:4px solid var(--matcha);color:#1f5c3a;}
+  .hb-amber{background:#fff3e0;border-left:4px solid var(--amber);color:#7a4500;}
+  .hbox strong{font-weight:700;display:block;margin-bottom:3px;}
+
+  .vocab-list{background:#fff;border-radius:15px;border:1.5px solid var(--line);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+  .vocab-item{display:flex;align-items:flex-start;gap:11px;padding:11px 15px;border-bottom:1px solid var(--line);}
+  .vocab-item:last-child{border-bottom:none;}
+  .vocab-jp{font-family:'Noto Sans JP',sans-serif;font-size:17px;font-weight:700;color:var(--fuji);min-width:68px;flex-shrink:0;padding-top:2px;}
+  .vocab-body{flex:1;}
+  .vocab-en{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:1px;}
+  .vocab-note{font-size:11px;color:var(--mist);line-height:1.55;}
+
+  .board-mock{background:#0a0f1a;border-radius:13px;padding:14px;margin-bottom:11px;font-family:monospace;}
+  .board-row{display:flex;align-items:center;gap:7px;margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .board-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .board-time{color:#f0c040;font-size:15px;font-weight:700;min-width:46px;}
+  .board-type{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:700;white-space:nowrap;}
+  .bt-rapid{background:#e03030;color:#fff;}
+  .bt-local{background:#3060c0;color:#fff;}
+  .bt-special{background:#b06000;color:#fff;}
+  .board-dest{flex:1;color:#fff;font-size:13px;font-family:'Noto Sans JP',sans-serif;}
+  .board-dest-jp{font-size:10px;color:rgba(255,255,255,.5);display:block;}
+  .board-track{color:rgba(255,255,255,.4);font-size:11px;text-align:right;}
+  .board-track strong{color:#80c0ff;font-size:13px;display:block;}
+  .b-ann{display:flex;gap:6px;align-items:flex-start;margin-bottom:8px;font-size:11px;color:var(--mist);}
+  .b-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+
+  .step-flow{display:flex;flex-direction:column;gap:0;}
+  .step-item{display:flex;gap:13px;align-items:flex-start;}
+  .step-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+  .step-circle{width:34px;height:34px;border-radius:50%;background:var(--fuji);color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(45,74,122,.25);}
+  .step-line{width:2px;flex:1;min-height:20px;background:var(--line);margin:4px 0;}
+  .step-body{background:#fff;border-radius:13px;border:1.5px solid var(--line);padding:12px 14px;margin-bottom:9px;flex:1;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+  .step-title{font-size:13px;font-weight:700;margin-bottom:4px;color:var(--ink);}
+  .step-desc{font-size:12px;color:var(--mist);line-height:1.65;}
+  .step-desc strong{color:var(--ink);font-weight:700;}
+
+  .gate-visual{background:#fff;border-radius:15px;border:1.5px solid var(--line);padding:16px;margin-bottom:11px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+  .gate-svg-wrap{display:flex;justify-content:center;gap:20px;margin-bottom:12px;}
+  .gate-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .gate-box{width:58px;height:68px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:22px;border:2px solid;}
+  .gate-open{background:#e8f5ee;border-color:var(--matcha);}
+  .gate-closed{background:#fde8ec;border-color:var(--sakura);}
+  .gate-label{font-size:11px;font-weight:700;}
+  .gate-label.ok{color:var(--matcha);}
+  .gate-label.no{color:var(--sakura);}
+  .gate-desc{font-size:11px;color:var(--mist);line-height:1.5;}
+
+  .warn-strip{background:linear-gradient(135deg,#fff0f0,#ffe0e4);border:1.5px solid var(--sakura-light);border-radius:13px;padding:12px 14px;margin-bottom:11px;display:flex;gap:10px;font-size:12px;color:#7a1a2a;line-height:1.6;}
+  .warn-strip-icon{font-size:19px;flex-shrink:0;}
+  .warn-strip strong{font-weight:700;display:block;margin-bottom:2px;color:#9a1a2a;}
+
+  .suica-flow{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .suica-step{background:#fff;border-radius:13px;border:1.5px solid var(--line);padding:13px 11px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+  .suica-icon{font-size:26px;margin-bottom:5px;display:block;}
+  .suica-num{font-size:10px;font-weight:700;color:var(--mist);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+  .suica-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+  .suica-desc{font-size:11px;color:var(--mist);line-height:1.5;}
+
+  .phrase-card{background:var(--fuji-pale);border-radius:13px;border-left:4px solid var(--fuji);padding:12px 14px;margin-bottom:8px;}
+  .phrase-jp{font-family:'Noto Sans JP',sans-serif;font-size:15px;font-weight:700;color:var(--fuji);margin-bottom:3px;}
+  .phrase-romaji{font-size:11px;color:var(--fuji-light);font-style:italic;margin-bottom:2px;}
+  .phrase-vi{font-size:12px;color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="fuji-icon">🗻</span>
+    <h1>Jujo → <span>Kawaguchiko</span><br>Cẩm nang tự đi tàu Nhật</h1>
+    <p class="hero-sub">Từ lần đầu nhìn tàu → đến đích an toàn · Dành cho người mới hoàn toàn</p>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn" onclick="switchTab('t1')" id="btn-t1">
+    <span class="ti">🚃</span>Nhận biết tàu
+  </button>
+  <button class="tab-btn active" onclick="switchTab('t2')" id="btn-t2">
+    <span class="ti">🗺️</span>Hành trình
+  </button>
+  <button class="tab-btn" onclick="switchTab('t3')" id="btn-t3">
+    <span class="ti">🛠️</span>Mẹo & Checklist
+  </button>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 1 — NHẬN BIẾT TÀU
+══════════════════════════════════ -->
+<div id="t1" class="tab-panel">
+<div class="content">
+
+  <div class="gsec">
+    <div class="gsec-title">🎨 Nhận biết tàu qua màu sắc</div>
+    <div class="hbox hb-blue"><strong>💡 Bí quyết số 1</strong>Mỗi tuyến JR có một màu riêng — nhìn dải màu trên thân tàu là biết ngay đang ở tuyến nào.</div>
+    <div class="train-grid">
+      <div class="train-card">
+        <div class="train-color-bar" style="background:#f97316;"></div>
+        <div class="train-card-body">
+          <div class="train-name-jp">中央線快速</div>
+          <div class="train-name">Chuo Rapid Line</div>
+          <div class="train-desc"><strong>Màu cam 🟠</strong> — tuyến chính Shinjuku → Takao → Otsuki. Quan trọng nhất hành trình!</div>
+        </div>
+      </div>
+      <div class="train-card">
+        <div class="train-color-bar" style="background:#16a34a;"></div>
+        <div class="train-card-body">
+          <div class="train-name-jp">埼京線</div>
+          <div class="train-name">Saikyo Line</div>
+          <div class="train-desc"><strong>Màu xanh lá 🟢</strong> — xuất phát từ ga Jujo, đi thẳng Shinjuku.</div>
+        </div>
+      </div>
+      <div class="train-card">
+        <div class="train-color-bar" style="background:#84cc16;"></div>
+        <div class="train-card-body">
+          <div class="train-name-jp">山手線</div>
+          <div class="train-name">Yamanote Line</div>
+          <div class="train-desc"><strong>Xanh vàng 🟡</strong> — vòng tròn quanh trung tâm Tokyo, dự phòng rất hữu ích.</div>
+        </div>
+      </div>
+      <div class="train-card">
+        <div class="train-color-bar" style="background:linear-gradient(90deg,#f43f5e 50%,#fff 50%);border-bottom:1px solid #eee;"></div>
+        <div class="train-card-body">
+          <div class="train-name-jp">富士急行線</div>
+          <div class="train-name">Fujikyu Railway</div>
+          <div class="train-desc"><strong>Trắng-đỏ 🔴</strong> + hình núi Fuji — tuyến cuối từ Otsuki → Kawaguchiko.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">🚄 Phân biệt loại tàu</div>
+    <div class="hbox hb-amber"><strong>⚠️ Quan trọng</strong>Cùng tuyến nhưng tàu dừng số ga khác nhau — lên nhầm loại là bị qua ga!</div>
+    <div class="vocab-list">
+      <div class="vocab-item">
+        <div class="vocab-jp" style="color:#c00;font-size:16px;">特急</div>
+        <div class="vocab-body">
+          <div class="vocab-en">Tokkyu — Tàu đặc biệt nhanh</div>
+          <div class="vocab-note">Cần mua vé thêm. Hành trình này <strong>KHÔNG dùng loại này</strong>.</div>
+        </div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-jp" style="color:#c06000;font-size:14px;">特別快速</div>
+        <div class="vocab-body">
+          <div class="vocab-en">Special Rapid — Nhanh đặc biệt</div>
+          <div class="vocab-note">Dừng ít ga, không cần vé thêm. Nếu điểm cuối là <strong>"大月"</strong> → lên ngay!</div>
+        </div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-jp" style="color:#e03030;">快速</div>
+        <div class="vocab-body">
+          <div class="vocab-en">Kaisoku — Rapid</div>
+          <div class="vocab-note">Nhanh vừa, bỏ qua một số ga nhỏ. Chủ lực Chuo Line từ Shinjuku.</div>
+        </div>
+      </div>
+      <div class="vocab-item">
+        <div class="vocab-jp" style="color:var(--fuji);">普通</div>
+        <div class="vocab-body">
+          <div class="vocab-en">Futsuu — Local (Tàu thường)</div>
+          <div class="vocab-note">Dừng mọi ga, chậm hơn. <strong>Đây là loại cần đi từ Takao → Otsuki.</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">📋 Đọc bảng điện tử tại ga</div>
+    <p style="font-size:12px;color:var(--mist);margin-bottom:11px;line-height:1.6;">Bảng điện tử trên sân ga thường trông như thế này — học cách đọc để không lên nhầm tàu:</p>
+    <div class="board-mock">
+      <div class="board-row">
+        <div class="board-time">10:24</div>
+        <div class="board-type bt-special">特別快速</div>
+        <div class="board-dest">大月 行き<span class="board-dest-jp">Otsuki</span></div>
+        <div class="board-track">Sân ga<strong>3</strong></div>
+      </div>
+      <div class="board-row">
+        <div class="board-time">10:31</div>
+        <div class="board-type bt-rapid">快速</div>
+        <div class="board-dest">高尾 行き<span class="board-dest-jp">Takao</span></div>
+        <div class="board-track">Sân ga<strong>3</strong></div>
+      </div>
+      <div class="board-row">
+        <div class="board-time">10:38</div>
+        <div class="board-type bt-local">普通</div>
+        <div class="board-dest">河口湖 行き<span class="board-dest-jp">Kawaguchiko</span></div>
+        <div class="board-track">Sân ga<strong>1</strong></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <div class="b-ann"><div class="b-dot" style="background:#f0c040;"></div><span><strong style="color:var(--ink);">Giờ xuất phát</strong> — giờ tàu rời ga (không phải đến ga)</span></div>
+      <div class="b-ann"><div class="b-dot" style="background:#e03030;"></div><span><strong style="color:var(--ink);">Loại tàu</strong> — Special Rapid / Rapid / Local như giải thích ở trên</span></div>
+      <div class="b-ann"><div class="b-dot" style="background:#fff;border:1px solid #ccc;"></div><span><strong style="color:var(--ink);">行き (Yuki) = "hướng đi"</strong> — đây là điểm cuối. Thấy 大月行き là đúng tàu!</span></div>
+      <div class="b-ann"><div class="b-dot" style="background:#80c0ff;"></div><span><strong style="color:var(--ink);">Số sân ga</strong> — sân ga cần đứng chờ</span></div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">🧭 5 bước tìm đúng sân ga</div>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">1</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-title">Vào ga — tìm biển "JR" màu xanh đậm</div>
+          <div class="step-desc">Ga Nhật thường có nhiều tuyến (tư nhân + JR dùng chung). Luôn tìm biển <strong>「JR」</strong> để vào đúng khu JR.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">2</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-title">Quẹt thẻ Suica vào cổng soát vé</div>
+          <div class="step-desc">Đặt thẻ lên mặt cảm ứng → đèn xanh → đi qua ngay. <strong>Không đứng lại giữa cổng!</strong> Cổng tự đóng sau ~2 giây.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">3</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-title">Nhìn biển chỉ tuyến — tìm màu cam</div>
+          <div class="step-desc">Trong ga có biển chỉ đường theo màu tuyến. Tìm biển <strong>màu cam 🟠</strong> ghi 「中央線」và đi theo.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">4</div><div class="step-line"></div></div>
+        <div class="step-body">
+          <div class="step-title">Xuống đúng sân ga — đọc bảng điện tử</div>
+          <div class="step-desc">Đọc <strong>「行き」</strong> trên bảng để xác nhận đúng tàu. Đừng vội lên ngay — chờ thấy đúng hướng đi.</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-left"><div class="step-circle">5</div></div>
+        <div class="step-body">
+          <div class="step-title">Xếp hàng đúng vạch — nhường khách xuống trước</div>
+          <div class="step-desc">Dưới sàn có vạch kẻ hai bên cửa tàu. Đứng theo người Nhật, <strong>nhường lối giữa cho khách xuống</strong> rồi mới lên.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">🚪 Cổng soát vé — đừng để bị kẹt</div>
+    <div class="gate-visual">
+      <div class="gate-svg-wrap">
+        <div class="gate-item">
+          <div class="gate-box gate-open">✅<span style="font-size:10px;color:var(--matcha);font-weight:700;">MỞ</span></div>
+          <div class="gate-label ok">Quẹt đúng → qua ngay</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-box gate-closed">🚫<span style="font-size:10px;color:var(--sakura);font-weight:700;">ĐÓNG</span></div>
+          <div class="gate-label no">Thiếu tiền / sai tuyến</div>
+        </div>
+      </div>
+      <div class="gate-desc">Cổng đóng = Suica không đủ tiền. Đừng hoảng — tìm nhân viên hoặc máy <strong>「精算機」(Seisanki)</strong> ngay gần cổng để nạp thêm.</div>
+    </div>
+    <div class="warn-strip">
+      <div class="warn-strip-icon">⚠️</div>
+      <div><strong>Cổng đóng khi RA ngoài?</strong>Tiền không đủ cho đoạn vừa đi. Đừng thoát theo người khác — tìm máy <strong>精算機 (Seisanki / Fare Adjustment)</strong>, đặt thẻ vào, trả thêm, rồi ra bình thường.</div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">💳 Dùng thẻ Suica / PASMO</div>
+    <div class="hbox hb-green"><strong>✅ Suica là tất cả những gì bạn cần</strong>Không cần mua vé giấy, không cần biết giá vé — chỉ cần đảm bảo thẻ có tiền và quẹt vào/ra.</div>
+    <div class="suica-flow">
+      <div class="suica-step"><span class="suica-icon">🏧</span><div class="suica-num">Bước 1</div><div class="suica-title">Mua thẻ tại máy</div><div class="suica-desc">Sân bay hoặc ga lớn. Chọn "Suica", nạp ¥2,000–3,000 để bắt đầu</div></div>
+      <div class="suica-step"><span class="suica-icon">🚪</span><div class="suica-num">Bước 2</div><div class="suica-title">Quẹt vào khi vào ga</div><div class="suica-desc">Đèn xanh = OK. Đi qua ngay, không đứng lại</div></div>
+      <div class="suica-step"><span class="suica-icon">🚃</span><div class="suica-num">Bước 3</div><div class="suica-title">Lên tàu, không làm gì thêm</div><div class="suica-desc">Tiền tự trừ khi quẹt ra ở ga đến</div></div>
+      <div class="suica-step"><span class="suica-icon">✅</span><div class="suica-num">Bước 4</div><div class="suica-title">Quẹt ra khi đến ga</div><div class="suica-desc">Hệ thống tự tính tiền theo điểm vào và điểm ra</div></div>
+    </div>
+    <div class="hbox hb-amber" style="margin-top:11px;"><strong>💰 Nạp thêm (Charge)</strong>Máy nạp thẻ màu xanh lá ghi 「チャージ / Charge」cạnh cổng soát vé. Nạp tối thiểu ¥1,000. Tổng hành trình Jujo → Kawaguchiko ≈ ¥1,500–2,000/người.</div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">🗣 Từ vựng sống còn tại ga</div>
+    <div class="vocab-list">
+      <div class="vocab-item"><div class="vocab-jp">〇〇行き</div><div class="vocab-body"><div class="vocab-en">〇〇 Yuki = "hướng 〇〇"</div><div class="vocab-note">「大月行き」= tàu đi Otsuki — thấy là đúng tàu!</div></div></div>
+      <div class="vocab-item"><div class="vocab-jp">乗り換え</div><div class="vocab-body"><div class="vocab-en">Norikae = Đổi tàu</div><div class="vocab-note">Biển 「乗り換え」chỉ lối đổi tuyến trong ga</div></div></div>
+      <div class="vocab-item"><div class="vocab-jp">出口</div><div class="vocab-body"><div class="vocab-en">Deguchi = Lối ra</div><div class="vocab-note">北口=Bắc, 南口=Nam, 東口=Đông, 西口=Tây</div></div></div>
+      <div class="vocab-item"><div class="vocab-jp">改札口</div><div class="vocab-body"><div class="vocab-en">Kaisatsuguchi = Cổng soát vé</div><div class="vocab-note">Nơi quẹt Suica vào/ra ga</div></div></div>
+      <div class="vocab-item"><div class="vocab-jp">遅延</div><div class="vocab-body"><div class="vocab-en">Chien = Tàu bị trễ</div><div class="vocab-note">Hiếm xảy ra — cứ bình tĩnh chờ</div></div></div>
+      <div class="vocab-item"><div class="vocab-jp">運転見合わせ</div><div class="vocab-body"><div class="vocab-en">Unten miawase = Tàu tạm ngừng</div><div class="vocab-note">Nghiêm trọng — bật Google Maps tìm phương án B</div></div></div>
+    </div>
+  </div>
+
+  <div class="gsec">
+    <div class="gsec-title">🆘 Câu hỏi khẩn — nói với nhân viên ga</div>
+    <div class="phrase-card">
+      <div class="phrase-jp">「すみません、河口湖はどこですか？」</div>
+      <div class="phrase-romaji">Sumimasen, Kawaguchiko wa doko desu ka?</div>
+      <div class="phrase-vi">"Xin lỗi, ga Kawaguchiko ở đâu ạ?"</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-jp">「大月行きはどのホームですか？」</div>
+      <div class="phrase-romaji">Otsuki-yuki wa dono hoomu desu ka?</div>
+      <div class="phrase-vi">"Tàu đi Otsuki ở sân ga số mấy?"</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-jp">「このSuicaをチャージしたいです」</div>
+      <div class="phrase-romaji">Kono Suica wo chaaji shitai desu</div>
+      <div class="phrase-vi">"Tôi muốn nạp tiền vào Suica này"</div>
+    </div>
+    <div class="phrase-card">
+      <div class="phrase-jp">「英語が話せますか？」</div>
+      <div class="phrase-romaji">Eigo ga hanasemasu ka?</div>
+      <div class="phrase-vi">"Bạn có nói được tiếng Anh không?" — hỏi khi cần</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 2 — HÀNH TRÌNH
+══════════════════════════════════ -->
+<div id="t2" class="tab-panel active">
+<div class="content">
+
+  <div class="instruction">
+    <strong>Cách dùng:</strong> Nhấn vào ga bạn đang bị kẹt → xem ngay các lựa chọn thoát hiểm + bước tiếp theo.
+  </div>
+
+  <div class="station-card theme-start open" id="card-jujo">
+    <div class="station-header" onclick="toggle('card-jujo')">
+      <div class="station-badge">🚉</div>
+      <div class="station-info">
+        <div class="station-label">Điểm xuất phát</div>
+        <div class="station-name">Ga Jujo</div>
+        <div class="station-name-jp">十条駅 — JR Saikyo Line (màu xanh lá)</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="panel">
+      <div class="stuck-label">🚨 Bị kẹt tại đây?</div>
+      <div class="option opt-blue">
+        <div class="option-num">1</div>
+        <div class="option-body">
+          <div class="option-title">Lên tàu Saikyo Line → Shinjuku</div>
+          <div class="option-desc">Tàu <strong>JR Saikyo Line</strong> màu xanh lá, hướng Shinjuku/Osaki — đi thẳng không đổi tàu.<br>~12–14 phút, cứ 10–15 phút có 1 chuyến.<span class="tag tag-primary">✓ Ưu tiên 1</span></div>
+        </div>
+      </div>
+      <div class="option opt-pink">
+        <div class="option-num">2</div>
+        <div class="option-body">
+          <div class="option-title">→ Ikebukuro rồi đổi Yamanote Line</div>
+          <div class="option-desc">Saikyo Line → <strong>Ikebukuro</strong>, đổi <strong>Yamanote Line</strong> vòng trong đến Shinjuku. Tốt nếu tàu đến Shinjuku bị chậm.<span class="tag tag-alt">Dự phòng</span></div>
+        </div>
+      </div>
+      <div class="option opt-green">
+        <div class="option-num">3</div>
+        <div class="option-body">
+          <div class="option-title">→ Musashi-Urawa → Musashino Line → Tachikawa</div>
+          <div class="option-desc">Bỏ qua hoàn toàn trung tâm đông đúc. Mất thêm ~20 phút nhưng ổn định hơn.<span class="tag tag-ok">Tránh đông</span></div>
+        </div>
+      </div>
+      <div class="next-step"><div class="next-step-arrow">→</div><div class="next-step-text"><strong>Bước tiếp: đến Shinjuku</strong><span>Xem card bên dưới</span></div></div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div>CHẶNG 1<div class="connector-line"></div></div>
+
+  <div class="station-card theme-shinjuku" id="card-shinjuku">
+    <div class="station-header" onclick="toggle('card-shinjuku')">
+      <div class="station-badge">🔴</div>
+      <div class="station-info">
+        <div class="station-label">Ga trung chuyển lớn</div>
+        <div class="station-name">Ga Shinjuku</div>
+        <div class="station-name-jp">新宿駅 — tìm tàu màu CAM (Chuo Line)</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="panel">
+      <div class="stuck-label">🚨 Bị kẹt / lạc tại đây?</div>
+      <div class="option opt-blue">
+        <div class="option-num">1</div>
+        <div class="option-body">
+          <div class="option-title">Tìm Chuo Line Rapid (tàu màu CAM) → hướng Takao</div>
+          <div class="option-desc">Tàu <strong>màu cam 🟠</strong> — biển 「中央線快速」. Lên bất kỳ tàu nào hướng <strong>Takao (高尾)</strong>. Tần suất cao, ~5–10 phút/chuyến.<span class="tag tag-primary">✓ Ưu tiên 1</span></div>
+        </div>
+      </div>
+      <div class="option opt-pink">
+        <div class="option-num">2</div>
+        <div class="option-body">
+          <div class="option-title">Thấy "特別快速 大月行き" → lên ngay!</div>
+          <div class="option-desc">Tàu <strong>Special Rapid (特別快速)</strong> điểm cuối là <strong>"Otsuki (大月)"</strong> — lên ngay, không cần đổi tàu ở Takao.<span class="tag tag-ok">Không đổi tàu</span></div>
+        </div>
+      </div>
+      <div class="option opt-amber">
+        <div class="option-num">3</div>
+        <div class="option-body">
+          <div class="option-title">Chuo Line bị hủy → dùng Keio Line</div>
+          <div class="option-desc">Đổi sang <strong>Keio Line (京王線)</strong> → <strong>Kitano (北野)</strong> → <strong>Keio Takao Line</strong> → <strong>Takao-san-guchi (高尾山口)</strong> — gần ga Takao JR.<span class="tag tag-warn">⚠ Khẩn cấp</span></div>
+        </div>
+      </div>
+      <div class="next-step"><div class="next-step-arrow">→</div><div class="next-step-text"><strong>Bước tiếp: đến ga Takao</strong><span>~50 phút từ Shinjuku</span></div></div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div>CHẶNG 2<div class="connector-line"></div></div>
+
+  <div class="station-card theme-takao" id="card-takao">
+    <div class="station-header" onclick="toggle('card-takao')">
+      <div class="station-badge">🍃</div>
+      <div class="station-info">
+        <div class="station-label">Điểm chuyển tiếp quan trọng</div>
+        <div class="station-name">Ga Takao</div>
+        <div class="station-name-jp">高尾駅 — đổi sang tàu 普通 (Local)</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="panel">
+      <div class="stuck-label">🚨 Bị kẹt / lỡ tàu tại đây?</div>
+      <div class="option opt-green">
+        <div class="option-num">1</div>
+        <div class="option-body">
+          <div class="option-title">Chờ tàu 普通 (Local) → hướng Otsuki / Kofu</div>
+          <div class="option-desc">Đổi sân ga — tàu <strong>普通 (Local)</strong> hướng <strong>大月 / 甲府 / 松本</strong>. ~2–3 chuyến/giờ, lỡ 1 chuyến chờ tối đa 30 phút.<span class="tag tag-primary">✓ Ưu tiên 1</span></div>
+        </div>
+      </div>
+      <div class="option opt-pink">
+        <div class="option-num">2</div>
+        <div class="option-body">
+          <div class="option-title">Lỡ tàu lâu → ghé núi Takao-san 😄</div>
+          <div class="option-desc">Đây là trạm cáp treo lên núi <strong>Takao-san</strong> — đi cáp ngắm cảnh, xuống rồi bắt tàu tiếp.<span class="tag tag-ok">Bonus du lịch</span></div>
+        </div>
+      </div>
+      <div class="option opt-amber">
+        <div class="option-num">3</div>
+        <div class="option-body">
+          <div class="option-title">Tàu không chạy → taxi đến Otsuki</div>
+          <div class="option-desc">Trường hợp bất khả kháng: taxi ~35 phút, khoảng <strong>¥5,000–7,000</strong>. Chia nhóm là hợp lý.<span class="tag tag-warn">⚠ Khẩn cấp</span></div>
+        </div>
+      </div>
+      <div class="next-step"><div class="next-step-arrow">→</div><div class="next-step-text"><strong>Bước tiếp: đến ga Otsuki</strong><span>~40 phút từ Takao</span></div></div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div>CHẶNG 3<div class="connector-line"></div></div>
+
+  <div class="station-card theme-otsuki" id="card-otsuki">
+    <div class="station-header" onclick="toggle('card-otsuki')">
+      <div class="station-badge">🔶</div>
+      <div class="station-info">
+        <div class="station-label">Cửa vào Fujikyu Railway</div>
+        <div class="station-name">Ga Otsuki</div>
+        <div class="station-name-jp">大月駅 — tìm tàu hình núi Fuji (đỏ-trắng)</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="panel">
+      <div class="stuck-label">🚨 Bị kẹt / lỡ tàu tại đây?</div>
+      <div class="option opt-amber">
+        <div class="option-num">1</div>
+        <div class="option-body">
+          <div class="option-title">Chờ Fujikyu Railway → hướng Kawaguchiko</div>
+          <div class="option-desc">Tìm sân ga <strong>富士急行線</strong> — tàu có hình núi Fuji, màu đỏ-trắng. Hướng <strong>河口湖 (Kawaguchiko)</strong>. ~1–2 chuyến/giờ.<span class="tag tag-primary">✓ Ưu tiên 1</span></div>
+        </div>
+      </div>
+      <div class="option opt-pink">
+        <div class="option-num">2</div>
+        <div class="option-body">
+          <div class="option-title">Fujikyu bị hủy → Fujikyu Highway Bus</div>
+          <div class="option-desc">Tìm <strong>Fujikyu Highway Bus</strong> tại bãi xe trước ga — chạy thẳng đến Kawaguchiko. Khoảng <strong>¥1,000–1,300</strong>.<span class="tag tag-alt">Phương án B</span></div>
+        </div>
+      </div>
+      <div class="option opt-green">
+        <div class="option-num">3</div>
+        <div class="option-body">
+          <div class="option-title">Chờ lâu → ăn gì ở khu ga Otsuki</div>
+          <div class="option-desc">Vài tiệm mì, combini gần ga. Tranh thủ ăn no vì đến Kawaguchiko thường đói rồi 🍜<span class="tag tag-ok">Mẹo thực tế</span></div>
+        </div>
+      </div>
+      <div class="next-step"><div class="next-step-arrow">→</div><div class="next-step-text"><strong>Bước tiếp: đến ga Kawaguchiko</strong><span>~50 phút từ Otsuki</span></div></div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div>ĐÍCH ĐẾN<div class="connector-line"></div></div>
+
+  <div class="destination">
+    <div class="destination-icon">🗻</div>
+    <div class="destination-title">Kawaguchiko</div>
+    <div class="destination-jp">河口湖駅 — Điểm cuối Fujikyu Railway</div>
+    <div class="destination-time">⏱ Tổng hành trình từ Jujo: khoảng 2.5 – 3.5 tiếng</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 3 — MẸO & CHECKLIST
+══════════════════════════════════ -->
+<div id="t3" class="tab-panel">
+<div class="content">
+
+  <div class="tips-section" style="margin-top:0;">
+    <div class="tips-title">🛠 Mẹo sinh tồn tổng hợp</div>
+    <div class="tip-item"><div class="tip-icon">📱</div><div class="tip-text"><strong>Google Maps hoặc NAVITIME Japan</strong> — luôn mở để tra giờ thực tế. Tải offline map trước khi đi để dùng khi mất mạng.</div></div>
+    <div class="tip-item"><div class="tip-icon">💳</div><div class="tip-text"><strong>Suica / PASMO</strong> quẹt được toàn bộ kể cả Fujikyu Railway. Nạp ≥ ¥3,000 trước khi xuất phát.</div></div>
+    <div class="tip-item"><div class="tip-icon">⏰</div><div class="tip-text">Tránh giờ cao điểm <strong>7–9h sáng</strong> trên Chuo Line nếu có hành lý lớn — tàu cực kỳ đông, không gian hẹp.</div></div>
+    <div class="tip-item"><div class="tip-icon">🎫</div><div class="tip-text">Mùa <strong>Seishun 18 Kippu</strong>: vé siêu rẻ cho đúng kiểu hành trình này — hỏi ở quầy JR trước khi đi.</div></div>
+    <div class="tip-item"><div class="tip-icon">🧳</div><div class="tip-text">Hành lý lớn: kéo theo chiều dọc khi lên/xuống. Để vào cuối toa hoặc giá trên đầu ghế. Không chặn cửa.</div></div>
+    <div class="tip-item"><div class="tip-icon">🔇</div><div class="tip-text">Trên tàu: <strong>không gọi điện, nói chuyện nhỏ giọng, tắt tiếng điện thoại</strong> — đây là văn hóa bất thành văn ai cũng giữ.</div></div>
+    <div class="tip-item"><div class="tip-icon">🌸</div><div class="tip-text">Đi trong <strong>Golden Week (cuối tháng 4 – đầu tháng 5)</strong>: Fujikyu Railway rất đông, nên xuất phát sớm buổi sáng.</div></div>
+    <div class="tip-item"><div class="tip-icon">🗣</div><div class="tip-text">Câu vàng: <strong>「すみません、河口湖はどこですか？」</strong> — "Xin lỗi, ga Kawaguchiko ở đâu?" — người Nhật rất vui lòng chỉ đường.</div></div>
+  </div>
+
+  <div style="margin-top:20px;background:#fff;border-radius:16px;border:1.5px solid var(--line);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.04);">
+    <div style="padding:15px 17px 9px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--fuji);">✅ Checklist trước khi ra khỏi phòng</div>
+    <div id="checklist"></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b.getAttribute('onclick') === "switchTab('" + id + "')") b.classList.add('active');
+    });
+    window.scrollTo(0, 0);
+  }
+
+  function toggle(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  const checks = [
+    {id:'c1', text:'Thẻ Suica đã nạp ≥ ¥3,000'},
+    {id:'c2', text:'Đã tải NAVITIME Japan hoặc Google Maps offline'},
+    {id:'c3', text:'Biết ga xuất phát: Jujo (十条) — Saikyo Line (xanh lá)'},
+    {id:'c4', text:'Mục tiêu đầu: ga Shinjuku'},
+    {id:'c5', text:'Từ Shinjuku: tìm tàu Chuo Line màu CAM 🟠'},
+    {id:'c6', text:'Đổi tàu ở ga Takao sang Local 普通'},
+    {id:'c7', text:'Đổi sang Fujikyu Railway ở ga Otsuki'},
+    {id:'c8', text:'Pin điện thoại đầy + cục sạc dự phòng'},
+    {id:'c9', text:'Chụp ảnh file này để xem offline khi cần'},
+  ];
+
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem('jujo-cl') || '{}'); } catch(e) {}
+  const cl = document.getElementById('checklist');
+
+  checks.forEach(c => {
+    const checked = !!saved[c.id];
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:12px;padding:11px 17px;border-top:1px solid var(--line);cursor:pointer;transition:background .15s;';
+    div.innerHTML =
+      '<div id="bx-'+c.id+'" style="width:22px;height:22px;border-radius:6px;border:2px solid '+(checked?'var(--matcha)':'var(--line)')+';background:'+(checked?'var(--matcha)':'#fff')+';display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;">'+(checked?'<span style="color:#fff;font-size:12px;font-weight:700;">✓</span>':'')+'</div>'+
+      '<span id="tx-'+c.id+'" style="font-size:13px;color:'+(checked?'var(--mist)':'var(--ink)')+';text-decoration:'+(checked?'line-through':'none')+';line-height:1.4;">'+c.text+'</span>';
+    div.onclick = () => {
+      saved[c.id] = !saved[c.id];
+      try { localStorage.setItem('jujo-cl', JSON.stringify(saved)); } catch(e){}
+      const bx = document.getElementById('bx-'+c.id);
+      const tx = document.getElementById('tx-'+c.id);
+      const ok = saved[c.id];
+      bx.style.borderColor = ok ? 'var(--matcha)' : 'var(--line)';
+      bx.style.background = ok ? 'var(--matcha)' : '#fff';
+      bx.innerHTML = ok ? '<span style="color:#fff;font-size:12px;font-weight:700;">✓</span>' : '';
+      tx.style.color = ok ? 'var(--mist)' : 'var(--ink)';
+      tx.style.textDecoration = ok ? 'line-through' : 'none';
+    };
+    cl.appendChild(div);
+  });
+</script>
+</body>
+</html>
