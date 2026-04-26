@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokyo Trip 2026 · 29/4 – 5/5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1614;
+    --paper: #f5f0e8;
+    --cream: #ede7d9;
+    --red: #c0392b;
+    --red-light: #e8d5d3;
+    --gold: #b8860b;
+    --gold-light: #f0e6c0;
+    --muted: #7a6f63;
+    --border: #d4c9b8;
+    --green: #2d6a4f;
+    --green-light: #d8ead2;
+    --blue: #1a4a6e;
+    --blue-light: #d0e0ef;
+    --shadow: 0 2px 12px rgba(26,22,20,0.10);
+    --shadow-lg: 0 6px 32px rgba(26,22,20,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 20px 24px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .header-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .header-sub {
+    font-size: 11px;
+    color: #a0998f;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-jp {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 24px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 13px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn-ghost { background: transparent; color: #c0b8b0; border: 1px solid #4a4440; }
+  .btn-ghost:hover { background: #2a2420; color: var(--paper); }
+  .btn-red { background: var(--red); color: white; }
+  .btn-red:hover { background: #a93226; }
+  .btn-gold { background: var(--gold); color: white; }
+  .btn-gold:hover { background: #9a7209; }
+  .btn-green { background: var(--green); color: white; }
+  .btn-green:hover { background: #1e4d37; }
+  .btn-blue { background: var(--blue); color: white; }
+  .btn-blue:hover { background: #12355a; }
+
+  /* ── MAIN LAYOUT ── */
+  .main-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
+
+  /* ── VERSION BAR ── */
+  .version-bar {
+    background: var(--gold-light);
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .version-bar label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .version-select {
+    flex: 1;
+    min-width: 180px;
+    padding: 5px 10px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--ink);
+  }
+
+  .version-bar .hint {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── DAY CARD ── */
+  .day-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .day-header:hover { background: #e8e0d0; }
+
+  .day-badge {
+    min-width: 48px;
+    height: 48px;
+    background: var(--ink);
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Shippori Mincho', serif;
+    flex-shrink: 0;
+  }
+
+  .day-badge .dn { font-size: 9px; color: #a09088; text-transform: uppercase; letter-spacing: 0.1em; }
+  .day-badge .dnum { font-size: 22px; font-weight: 700; line-height: 1; }
+
+  .day-meta { flex: 1; }
+  .day-title { font-family: 'Shippori Mincho', serif; font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .day-date { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .day-cost { font-size: 12px; color: var(--green); font-weight: 600; margin-top: 3px; }
+
+  .day-toggle { color: var(--muted); font-size: 18px; transition: transform 0.2s; }
+  .day-card.open .day-toggle { transform: rotate(180deg); }
+
+  /* ── STOPS ── */
+  .stops-wrap {
+    display: none;
+    padding: 0 0 8px;
+  }
+
+  .day-card.open .stops-wrap { display: block; }
+
+  .stop-item {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 0 10px;
+    padding: 0 18px;
+    position: relative;
+  }
+
+  /* connector line */
+  .stop-item:not(:last-child) .stop-dot::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 22px;
+    bottom: -10px;
+    width: 1px;
+    background: var(--border);
+    transform: translateX(-50%);
+  }
+
+  .stop-dot {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 14px;
+  }
+
+  .dot-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px var(--red);
+    flex-shrink: 0;
+    z-index: 1;
+    position: relative;
+  }
+
+  .stop-item.is-transit .dot-circle { background: var(--muted); box-shadow: 0 0 0 1px var(--muted); }
+
+  .stop-content {
+    padding: 10px 0 10px;
+    border-bottom: 1px dashed var(--border);
+    min-width: 0;
+  }
+
+  .stop-item:last-child .stop-content { border-bottom: none; }
+
+  .stop-name {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+
+  .stop-name a { color: var(--blue); text-decoration: none; }
+  .stop-name a:hover { text-decoration: underline; }
+
+  .stop-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 3px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 400;
+  }
+
+  .tag-time { background: var(--blue-light); color: var(--blue); }
+  .tag-cost { background: var(--green-light); color: var(--green); }
+  .tag-free { background: #f0f0f0; color: #888; }
+  .tag-note { background: #fff8e0; color: #7a6010; }
+  .tag-modified { background: #fde8e8; color: var(--red); font-weight: 600; }
+
+  .stop-note-text {
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: italic;
+    background: var(--gold-light);
+    border-left: 3px solid var(--gold);
+    padding: 4px 8px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ── STOP ACTIONS ── */
+  .stop-actions {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+  }
+
+  .btn-edit-stop {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-edit-stop:hover { background: var(--cream); color: var(--ink); border-color: var(--ink); }
+
+  /* ── ADD STOP ── */
+  .add-stop-row {
+    display: flex;
+    justify-content: center;
+    padding: 8px 18px 12px;
+  }
+
+  .btn-add-stop {
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    width: 100%;
+  }
+
+  .btn-add-stop:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,22,20,0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-head {
+    background: var(--ink);
+    color: white;
+    padding: 14px 18px;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: white; }
+
+  .modal-body {
+    padding: 18px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    background: white;
+    transition: border 0.15s;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px var(--blue-light);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .modal-foot {
+    padding: 14px 18px;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--cream);
+  }
+
+  .btn-danger { background: var(--red); color: white; }
+  .btn-danger:hover { background: #a93226; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    z-index: 9999;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    header, .version-bar, .header-actions, .btn-edit-stop,
+    .btn-add-stop, .add-stop-row, .day-toggle { display: none !important; }
+    body { background: white; font-size: 11px; }
+    .main-wrap { padding: 0; max-width: 100%; }
+    .day-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; margin-bottom: 10px; }
+    .day-header { background: #f0f0f0 !important; }
+    .stops-wrap { display: block !important; }
+    .day-card { page-break-inside: avoid; }
+    .print-title {
+      display: block !important;
+      text-align: center;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+  }
+
+  .print-title { display: none; }
+
+  /* ── COST SUMMARY ── */
+  .cost-summary {
+    background: var(--ink);
+    color: white;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cost-item { text-align: center; }
+  .cost-item .cv { font-family: 'Shippori Mincho', serif; font-size: 22px; color: var(--gold); font-weight: 700; }
+  .cost-item .cl { font-size: 10px; color: #a09088; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 12px 14px 10px; gap: 8px; }
+    .header-jp { font-size: 18px; }
+    .header-actions { gap: 5px; }
+    .btn { padding: 6px 9px; font-size: 11px; }
+    .stop-item { grid-template-columns: 28px 1fr auto; }
+    .form-row { grid-template-columns: 1fr; }
+    .cost-summary { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-title">🗾 Tokyo Trip 2026</div>
+    <div class="header-sub">29/4 – 5/5 · 7 ngày · Jujo base</div>
+  </div>
+  <div class="header-jp">東京</div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" onclick="saveVersion()">💾 Lưu version</button>
+    <button class="btn btn-gold" onclick="exportJSON()">⬇ JSON</button>
+    <button class="btn btn-green" onclick="window.print()">🖨 In PDF</button>
+    <button class="btn btn-red" onclick="confirmReset()">↺ Reset</button>
+  </div>
+</header>
+
+<div class="main-wrap">
+
+  <div class="print-title">Lịch trình Tokyo 2026 · 29/4 – 5/5</div>
+
+  <!-- Version bar -->
+  <div class="version-bar">
+    <label>📌 Version:</label>
+    <select class="version-select" id="versionSelect" onchange="loadVersion(this.value)">
+      <option value="default">— Lộ trình gốc —</option>
+    </select>
+    <span class="hint" id="versionHint">Các thay đổi sẽ tự lưu khi bạn nhấn "Lưu version"</span>
+  </div>
+
+  <!-- Cost summary -->
+  <div class="cost-summary" id="costSummary"></div>
+
+  <!-- Days container -->
+  <div id="daysContainer"></div>
+
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span id="modalTitle">Chỉnh sửa điểm dừng</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Tên địa điểm</label>
+        <input type="text" id="editName" placeholder="VD: Senso-ji Temple">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Thời gian di chuyển</label>
+          <input type="text" id="editTime" placeholder="VD: 33 phút">
+        </div>
+        <div class="form-group">
+          <label>Chi phí (¥)</label>
+          <input type="text" id="editCost" placeholder="VD: 440">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Link Google Maps</label>
+        <input type="url" id="editMapLink" placeholder="https://maps.google.com/...">
+      </div>
+      <div class="form-group">
+        <label>📝 Ghi chú (note)</label>
+        <textarea id="editNote" rows="3" placeholder="VD: Đến sớm trước 8h, mặc áo che vai..."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger" id="btnDeleteStop" onclick="deleteStop()">🗑 Xóa điểm</button>
+      <button class="btn btn-ghost" onclick="closeModal()" style="background:#f5f0e8;color:var(--ink);border-color:var(--border)">Hủy</button>
+      <button class="btn btn-blue" onclick="saveStop()">✓ Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Stop Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span>➕ Thêm điểm dừng</span>
+      <button class="modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Tên địa điểm</label>
+        <input type="text" id="addName" placeholder="VD: TeamLab Planets">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Thời gian di chuyển</label>
+          <input type="text" id="addTime" placeholder="VD: 20 phút">
+        </div>
+        <div class="form-group">
+          <label>Chi phí (¥)</label>
+          <input type="text" id="addCost" placeholder="VD: 0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Link Google Maps</label>
+        <input type="url" id="addMapLink" placeholder="https://maps.google.com/...">
+      </div>
+      <div class="form-group">
+        <label>📝 Ghi chú</label>
+        <textarea id="addNote" rows="3" placeholder="Thêm ghi chú cho điểm này..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Chèn vào sau điểm số</label>
+        <select id="addAfterIndex"></select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeAddModal()" style="background:#f5f0e8;color:var(--ink);border-color:var(--border)">Hủy</button>
+      <button class="btn btn-blue" onclick="saveNewStop()">➕ Thêm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DEFAULT DATA ──────────────────────────────────────────────
+const DEFAULT_DAYS = [
+  {
+    dayNum: 0, date: "29/4/2026", label: "Di chuyển + Nhận phòng",
+    theme: "✈️",
+    stops: [
+      { name: "Narita Airport", time: null, cost: null, note: "", mapLink: "" },
+      { name: "Jujo (Tokyo) – Nhận phòng", time: "59 phút", cost: 2780, note: "1 chuyển tàu", mapLink: "" },
+      { name: "Tìm đồ ăn tối gần khách sạn", time: "5 phút", cost: 0, note: "", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 1, date: "30/4/2026", label: "Fuji / Kawaguchiko",
+    theme: "🗻",
+    stops: [
+      { name: "Jujo → Ga Kawaguchi", time: "3h11", cost: 2770, note: "2 chuyển tàu", mapLink: "" },
+      { name: "Kawaguchi → Oishi Park", time: "28 phút", cost: 570, note: "", mapLink: "https://maps.google.com/?q=Oishi+Park+Kawaguchiko" },
+      { name: "Oishi Park → Kawaguchiko Konohana Museum", time: "7 phút", cost: 280, note: "", mapLink: "" },
+      { name: "Museum → Ga Kawaguchiko", time: "22 phút", cost: 440, note: "⚠️ Phải có mặt tại ga lúc 16:00", mapLink: "" },
+      { name: "Ga Kawaguchiko → Jujo", time: "2h5", cost: 2410, note: "", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 2, date: "1/5/2026", label: "Tokyo Trung Tâm",
+    theme: "🏯",
+    stops: [
+      { name: "Jujo → Senso-ji", time: "33 phút", cost: 440, note: "", mapLink: "https://maps.google.com/?q=Senso-ji+Temple+Asakusa" },
+      { name: "Senso-ji → Asakusa Shin Nakamise", time: "4 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Asakusa → Ueno-onshi-koen", time: "21 phút", cost: 180, note: "", mapLink: "" },
+      { name: "Ueno Park → Ueno Zoo", time: "5 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Ueno Zoo → Shinjuku Gyoen", time: "43 phút", cost: 210, note: "", mapLink: "" },
+      { name: "Shinjuku Gyoen → Starbucks trong công viên", time: "12 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Starbucks → Tokyo Metropolitan Government Building", time: "27 phút", cost: 180, note: "Đài quan sát miễn phí", mapLink: "" },
+      { name: "Tokyo Metro Gov → Jujo", time: "31 phút", cost: 210, note: "", mapLink: "" },
+      { name: "Jujo → Ju-Jo Ginza Shopping Street (tối)", time: "5 phút", cost: 0, note: "Phố mua sắm local, không đông khách du lịch", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 3, date: "2/5/2026", label: "Meiji · Harajuku · Shibuya · Aqua Park · Tokyo Tower",
+    theme: "🗼",
+    stops: [
+      { name: "Jujo → Meijijingu Shrine", time: "23 phút", cost: 260, note: "", mapLink: "" },
+      { name: "Meiji → Harajuku Police Station (Takeshita-dori)", time: "10 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Harajuku → Shibuya Scramble", time: "10 phút", cost: 210, note: "Giao lộ đông nhất thế giới", mapLink: "https://maps.google.com/?q=Shibuya+Scramble+Crossing" },
+      { name: "Shibuya → Maxell Aqua Park Shinagawa", time: "30 phút", cost: 210, note: "", mapLink: "" },
+      { name: "Aqua Park → Tokyo Tower", time: "29 phút", cost: 0, note: "", mapLink: "https://maps.google.com/?q=Tokyo+Tower" },
+      { name: "Tokyo Tower → Tokyo (ga)", time: "17 phút", cost: 250, note: "", mapLink: "" },
+      { name: "Tokyo → Akihabara", time: "5 phút", cost: 160, note: "", mapLink: "" },
+      { name: "Akihabara → Jujo", time: "28 phút", cost: 210, note: "", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 4, date: "3/5/2026", label: "Kamakura + Enoshima",
+    theme: "🌊",
+    stops: [
+      { name: "Jujo → Ga Gokurakuji", time: "1h28", cost: 1450, note: "", mapLink: "" },
+      { name: "Gokurakuji → Goryo-jinja Shrine", time: "8 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Goryo-jinja → Kamakura Seaside Park", time: "11 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Kamakura Seaside → Inamuragasaki", time: "13 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Inamuragasaki → Enoshima (Shirasu Tobiccho)", time: "28 phút", cost: 220, note: "Shirasu = cá cơm trắng đặc sản vùng này", mapLink: "" },
+      { name: "Enoshima → Jujo", time: "1h35", cost: 1400, note: "", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 5, date: "4/5/2026", label: "Kawagoe + Tối Shinagawa",
+    theme: "🏮",
+    stops: [
+      { name: "Jujo → Ga Kawagoe", time: "44 phút", cost: 690, note: "", mapLink: "" },
+      { name: "Ga Kawagoe → Phố cổ Kurazukuri", time: "30 phút", cost: 230, note: "Little Edo – phố kho hàng cổ", mapLink: "" },
+      { name: "Phố cổ → Starbucks Kanetsuki-dori", time: "10 phút", cost: 0, note: "Starbucks nằm trong nhà cổ", mapLink: "" },
+      { name: "Starbucks → Kashiya Yokocho", time: "4 phút", cost: 0, note: "Hẻm bánh kẹo truyền thống", mapLink: "" },
+      { name: "Kashiya Yokocho → Kitain Temple", time: "19 phút", cost: 0, note: "", mapLink: "" },
+      { name: "Kitain → Ga Shinagawa", time: "1h33", cost: 840, note: "", mapLink: "" },
+      { name: "Shinagawa → Maxell Aqua Park (lần 2)", time: "8 phút", cost: 0, note: "Xem show ban đêm", mapLink: "" },
+      { name: "Aqua Park → Tennozu Isle", time: "18 phút", cost: 210, note: "Khu nghệ thuật + bar bờ sông", mapLink: "" },
+      { name: "Tennozu → Jujo", time: "44 phút", cost: 580, note: "", mapLink: "" }
+    ]
+  },
+  {
+    dayNum: 6, date: "5/5/2026", label: "Odaiba + Kết thúc",
+    theme: "🌉",
+    stops: [
+      { name: "Jujo → Odaiba Kaihin Koen", time: "50 phút", cost: 690, note: "Bãi biển nhân tạo, view cầu Rainbow Bridge", mapLink: "" },
+      { name: "Odaiba → Maxell Aqua Park", time: "39 phút", cost: 420, note: "", mapLink: "" },
+      { name: "Aqua Park → Jujo", time: "46 phút", cost: 350, note: "Về nghỉ ngơi, chuẩn bị về nước", mapLink: "" }
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────
+let currentData = JSON.parse(JSON.stringify(DEFAULT_DAYS));
+let editingDay = null;
+let editingStop = null;
+let addingDay = null;
+
+// ── INIT ──────────────────────────────────────────────────────
+window.onload = () => {
+  loadVersionList();
+  renderAll();
+};
+
+// ── RENDER ────────────────────────────────────────────────────
+function renderAll() {
+  renderCostSummary();
+  renderDays();
+}
+
+function renderCostSummary() {
+  const totalCost = currentData.reduce((sum, day) =>
+    sum + day.stops.reduce((s, st) => s + (parseInt(st.cost) || 0), 0), 0);
+  const totalStops = currentData.reduce((s, d) => s + d.stops.length, 0);
+  const days = currentData.length;
+  document.getElementById('costSummary').innerHTML = `
+    <div class="cost-item"><div class="cv">${days}</div><div class="cl">Ngày</div></div>
+    <div class="cost-item"><div class="cv">${totalStops}</div><div class="cl">Điểm dừng</div></div>
+    <div class="cost-item"><div class="cv">¥${totalCost.toLocaleString()}</div><div class="cl">Chi phí tàu xe</div></div>
+    <div class="cost-item"><div class="cv">~${Math.round(totalCost/170).toLocaleString()}k₫</div><div class="cl">Quy đổi VND</div></div>
+  `;
+}
+
+function renderDays() {
+  const c = document.getElementById('daysContainer');
+  c.innerHTML = '';
+  currentData.forEach((day, di) => {
+    const dayCost = day.stops.reduce((s, st) => s + (parseInt(st.cost) || 0), 0);
+    const isModified = isDefaultDay(di, day) === false;
+    const div = document.createElement('div');
+    div.className = 'day-card open';
+    div.id = `day-${di}`;
+
+    let stopsHtml = day.stops.map((stop, si) => {
+      const isTransit = stop.time && !stop.time.includes('phút tàu');
+      const orig = getDefaultStop(di, si);
+      const modified = orig && (stop.name !== orig.name || stop.cost !== orig.cost || stop.note !== orig.note);
+
+      return `
+        <div class="stop-item${isTransit ? ' is-transit' : ''}">
+          <div class="stop-dot"><div class="dot-circle"></div></div>
+          <div class="stop-content">
+            <div class="stop-name">
+              ${stop.mapLink ? `<a href="${stop.mapLink}" target="_blank">📍 ${stop.name}</a>` : stop.name}
+              ${modified ? '<span class="tag tag-modified" style="margin-left:6px">✏️ đã sửa</span>' : ''}
+            </div>
+            <div class="stop-meta">
+              ${stop.time ? `<span class="tag tag-time">⏱ ${stop.time}</span>` : ''}
+              ${stop.cost > 0 ? `<span class="tag tag-cost">¥${parseInt(stop.cost).toLocaleString()}</span>` : (stop.cost === 0 ? '<span class="tag tag-free">miễn phí</span>' : '')}
+            </div>
+            ${stop.note ? `<div class="stop-note-text">📝 ${stop.note}</div>` : ''}
+          </div>
+          <div class="stop-actions">
+            <button class="btn-edit-stop" onclick="openEdit(${di},${si})">✏️ Sửa</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    div.innerHTML = `
+      <div class="day-header" onclick="toggleDay(${di})">
+        <div class="day-badge">
+          <span class="dn">Ngày</span>
+          <span class="dnum">${day.dayNum}</span>
+        </div>
+        <div class="day-meta">
+          <div class="day-title">${day.theme} ${day.label}</div>
+          <div class="day-date">${day.date}</div>
+          <div class="day-cost">¥${dayCost.toLocaleString()} chi phí di chuyển</div>
+        </div>
+        <div class="day-toggle">▾</div>
+      </div>
+      <div class="stops-wrap">
+        ${stopsHtml}
+        <div class="add-stop-row">
+          <button class="btn-add-stop" onclick="openAddStop(${di})">＋ Thêm điểm dừng</button>
+        </div>
+      </div>
+    `;
+    c.appendChild(div);
+  });
+}
+
+function toggleDay(di) {
+  const card = document.getElementById(`day-${di}`);
+  card.classList.toggle('open');
+}
+
+// ── EDIT MODAL ────────────────────────────────────────────────
+function openEdit(di, si) {
+  editingDay = di;
+  editingStop = si;
+  const stop = currentData[di].stops[si];
+  document.getElementById('modalTitle').textContent = `Sửa: ${stop.name}`;
+  document.getElementById('editName').value = stop.name;
+  document.getElementById('editTime').value = stop.time || '';
+  document.getElementById('editCost').value = stop.cost !== null ? stop.cost : '';
+  document.getElementById('editMapLink').value = stop.mapLink || '';
+  document.getElementById('editNote').value = stop.note || '';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingDay = editingStop = null;
+}
+
+function saveStop() {
+  if (editingDay === null) return;
+  const stop = currentData[editingDay].stops[editingStop];
+  stop.name = document.getElementById('editName').value.trim() || stop.name;
+  stop.time = document.getElementById('editTime').value.trim() || null;
+  const costVal = document.getElementById('editCost').value.trim();
+  stop.cost = costVal === '' ? null : parseInt(costVal);
+  stop.mapLink = document.getElementById('editMapLink').value.trim();
+  stop.note = document.getElementById('editNote').value.trim();
+  closeModal();
+  renderAll();
+  showToast('✓ Đã lưu thay đổi');
+}
+
+function deleteStop() {
+  if (editingDay === null) return;
+  if (!confirm('Xóa điểm dừng này?')) return;
+  currentData[editingDay].stops.splice(editingStop, 1);
+  closeModal();
+  renderAll();
+  showToast('🗑 Đã xóa điểm dừng');
+}
+
+// ── ADD MODAL ─────────────────────────────────────────────────
+function openAddStop(di) {
+  addingDay = di;
+  document.getElementById('addName').value = '';
+  document.getElementById('addTime').value = '';
+  document.getElementById('addCost').value = '';
+  document.getElementById('addMapLink').value = '';
+  document.getElementById('addNote').value = '';
+  const sel = document.getElementById('addAfterIndex');
+  sel.innerHTML = '';
+  currentData[di].stops.forEach((s, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `Sau: ${i+1}. ${s.name.substring(0,30)}`;
+    sel.appendChild(opt);
+  });
+  sel.value = currentData[di].stops.length - 1;
+  document.getElementById('addModal').classList.add('open');
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('open');
+  addingDay = null;
+}
+
+function saveNewStop() {
+  if (addingDay === null) return;
+  const name = document.getElementById('addName').value.trim();
+  if (!name) { showToast('⚠ Nhập tên địa điểm'); return; }
+  const afterIdx = parseInt(document.getElementById('addAfterIndex').value);
+  const costVal = document.getElementById('addCost').value.trim();
+  const newStop = {
+    name,
+    time: document.getElementById('addTime').value.trim() || null,
+    cost: costVal === '' ? null : parseInt(costVal),
+    mapLink: document.getElementById('addMapLink').value.trim(),
+    note: document.getElementById('addNote').value.trim()
+  };
+  currentData[addingDay].stops.splice(afterIdx + 1, 0, newStop);
+  closeAddModal();
+  renderAll();
+  showToast('✓ Đã thêm điểm dừng');
+}
+
+// ── VERSION SYSTEM ────────────────────────────────────────────
+function saveVersion() {
+  const ts = new Date();
+  const label = ts.toLocaleDateString('vi-VN') + ' ' + ts.toLocaleTimeString('vi-VN', {hour:'2-digit',minute:'2-digit'});
+  const key = 'tokyo_v_' + ts.getTime();
+  const versionData = { label, savedAt: ts.toISOString(), data: JSON.parse(JSON.stringify(currentData)) };
+  localStorage.setItem(key, JSON.stringify(versionData));
+  loadVersionList();
+  // select this version
+  document.getElementById('versionSelect').value = key;
+  showToast(`💾 Đã lưu version: ${label}`);
+}
+
+function loadVersionList() {
+  const sel = document.getElementById('versionSelect');
+  const current = sel.value;
+  // keep default option
+  sel.innerHTML = '<option value="default">— Lộ trình gốc (mặc định) —</option>';
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('tokyo_v_')).sort().reverse();
+  keys.forEach(key => {
+    try {
+      const v = JSON.parse(localStorage.getItem(key));
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = `📌 ${v.label}`;
+      sel.appendChild(opt);
+    } catch(e) {}
+  });
+  if (current && sel.querySelector(`option[value="${current}"]`)) sel.value = current;
+  document.getElementById('versionHint').textContent = keys.length > 0
+    ? `${keys.length} version đã lưu`
+    : 'Chưa có version nào được lưu';
+}
+
+function loadVersion(key) {
+  if (key === 'default') {
+    currentData = JSON.parse(JSON.stringify(DEFAULT_DAYS));
+    renderAll();
+    showToast('↺ Đã tải lộ trình gốc');
+    return;
+  }
+  try {
+    const v = JSON.parse(localStorage.getItem(key));
+    if (v && v.data) {
+      currentData = v.data;
+      renderAll();
+      showToast(`📌 Đã tải: ${v.label}`);
+    }
+  } catch(e) { showToast('⚠ Lỗi khi tải version'); }
+}
+
+function confirmReset() {
+  if (!confirm('Xóa toàn bộ versions đã lưu và reset về lộ trình gốc?')) return;
+  Object.keys(localStorage).filter(k => k.startsWith('tokyo_v_')).forEach(k => localStorage.removeItem(k));
+  currentData = JSON.parse(JSON.stringify(DEFAULT_DAYS));
+  loadVersionList();
+  renderAll();
+  showToast('↺ Đã reset về lộ trình gốc');
+}
+
+// ── EXPORT JSON ───────────────────────────────────────────────
+function exportJSON() {
+  const exportData = {
+    title: "Tokyo Trip 2026",
+    exportedAt: new Date().toISOString(),
+    route: currentData.map(day => ({
+      day: day.dayNum,
+      date: day.date,
+      label: day.label,
+      theme: day.theme,
+      totalCost: day.stops.reduce((s, st) => s + (parseInt(st.cost) || 0), 0),
+      stops: day.stops.map((stop, si) => {
+        const orig = getDefaultStop(day.dayNum, si);
+        return {
+          ...stop,
+          isModified: orig ? (stop.name !== orig.name || stop.cost !== orig.cost || stop.note !== orig.note) : true,
+          originalName: orig ? orig.name : null
+        };
+      })
+    }))
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `tokyo-trip-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('⬇ Đã xuất JSON');
+}
+
+// ── HELPERS ───────────────────────────────────────────────────
+function getDefaultStop(di, si) {
+  // match by dayNum
+  const defDay = DEFAULT_DAYS.find(d => d.dayNum === (currentData[di] ? currentData[di].dayNum : -1));
+  if (!defDay) return null;
+  return defDay.stops[si] || null;
+}
+
+function isDefaultDay(di, day) {
+  const defDay = DEFAULT_DAYS.find(d => d.dayNum === day.dayNum);
+  if (!defDay) return false;
+  return JSON.stringify(day.stops) === JSON.stringify(defDay.stops);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Close modals on overlay click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('addModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAddModal();
+});
+</script>
+</body>
+</html>
